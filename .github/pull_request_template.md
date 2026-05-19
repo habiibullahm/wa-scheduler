@@ -20,7 +20,7 @@ What did you change to fix it?
 
 Confirm testing and no breaking changes.
 
-- [ ] Ran `go test ./...` from the repository root
+- [ ] Ran `make test` from the repository root
 - [ ] Added or updated tests so new functionality is covered (or explained below if tests are not applicable)
 - [ ] (Optional) Local Docker smoke test per [README](https://github.com/ghazlabs/wa-scheduler/blob/main/README.md)
 - [ ] No breaking changes, or documented below if any
