@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/ghazlabs/wa-scheduler/internal/core"
 	"github.com/go-chi/render"
 )
 
@@ -33,7 +34,21 @@ func NewSuccessResp(data interface{}) *RespBody {
 
 func NewErrorResp(err error) *RespBody {
 	var restErr *Error
-	if !errors.As(err, &restErr) {
+	if errors.As(err, &restErr) {
+		return &RespBody{
+			StatusCode: restErr.StatusCode,
+			OK:         false,
+			Err:        restErr.Err,
+			Message:    restErr.Message,
+		}
+	}
+
+	var cannotRetry *core.CannotRetryMessageError
+	if errors.As(err, &cannotRetry) {
+		restErr = NewConflictError(cannotRetry.Error())
+	} else if errors.Is(err, core.ErrMessageNotFound) {
+		restErr = NewNotFoundError("message not found")
+	} else {
 		restErr = NewInternalServerError(err)
 	}
 

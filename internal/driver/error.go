@@ -47,3 +47,19 @@ func NewInvalidCredsError() *Error {
 		Message:    "invalid credentials",
 	}
 }
+
+func NewConflictError(msg string) *Error {
+	return &Error{
+		StatusCode: http.StatusConflict,
+		Err:        "ERR_CONFLICT",
+		Message:    msg,
+	}
+}
+
+func NewNotFoundError(msg string) *Error {
+	return &Error{
+		StatusCode: http.StatusNotFound,
+		Err:        "ERR_MESSAGE_NOT_FOUND",
+		Message:    msg,
+	}
+}

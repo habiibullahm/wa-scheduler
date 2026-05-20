@@ -91,6 +91,9 @@ func (s *service) RetryMessage(ctx context.Context, input RetryMessageInput) err
 	if msg == nil {
 		return ErrMessageNotFound
 	}
+	if msg.Status != MessageStatusFailed {
+		return NewCannotRetryMessageError(msg.Status)
+	}
 	msg.ScheduledSendingAt = input.ScheduledSendingAt
 
 	err = s.Scheduler.RetryMessage(ctx, *msg)
